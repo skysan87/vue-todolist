@@ -26,7 +26,7 @@
 
     <div class="list-group">
       <draggable v-model="filteredTodos" @end="onDragEnd"
-                 v-bind:options="{animation:200, delay:50, handle:'.move-icon'}">
+                 v-bind:options="{handle:'.move-icon'}">
         <div class="list-group-item list-group-item-action list-style" v-for="item in filteredTodos" v-bind:key="item.id">
           <div class="d-flex">
             <div class="p-1 move-icon">
