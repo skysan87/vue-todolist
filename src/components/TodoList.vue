@@ -26,19 +26,22 @@
 
     <div class="list-group">
       <draggable v-model="filteredTodos" @end="onDragEnd"
-                 v-bind:options="{animation:200, delay:50, handle:'.todo-text'}">
+                 v-bind:options="{animation:200, delay:50, handle:'.move-icon'}">
         <div class="list-group-item list-group-item-action list-style" v-for="item in filteredTodos" v-bind:key="item.id">
           <div class="d-flex">
-            <div class="p-2"  @click="doChangeState(item)">
+            <div class="p-1 move-icon">
+              <font-awesome-icon icon="ellipsis-v" size="xs"/>
+            </div>
+            <div class="p-1"  @click="doChangeState(item)">
               <span class="circle-button del" v-bind:class="badgeColor(item.state)"></span>
             </div>
-            <div class="p-2 flex-grow-1 no-wrap todo-text" v-bind:title="item.comment">
+            <div class="p-1 flex-grow-1 no-wrap todo-text" v-bind:title="item.comment">
               {{ item.comment }}
             </div>
-            <div class="p-2" @click="editComment(item)">
+            <div class="p-1" @click="editComment(item)">
               <font-awesome-icon icon="edit" size="xs" class="del"/>
             </div>
-            <div class="p-2" @click="doRemove(item)">
+            <div class="p-1" @click="doRemove(item)">
               <span class="del">×</span>
             </div>
           </div>
@@ -234,9 +237,12 @@ export default {
   text-overflow: ellipsis;
 }
 
+.move-icon {
+  cursor: move;
+}
+
 .todo-text {
   text-align: left;
-  cursor: move;
 }
 
 .del {
@@ -249,16 +255,13 @@ div.list-style {
 }
 
 .circle-button {
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  margin: 0 auto;
-  font-size: 6px;
+  width: 22px;
+  height: 22px;
+  margin: auto;
   text-decoration: none;
   display: block;
   text-align: center;
   color: #FFFFFF;
-  /* background: #008DDD; */
   border-radius: 50%;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
