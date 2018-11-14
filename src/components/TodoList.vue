@@ -27,25 +27,15 @@
     <div class="list-group">
       <draggable v-model="filteredTodos" @end="onDragEnd"
                  v-bind:options="{handle:'.move-icon'}">
-        <div class="list-group-item list-group-item-action list-style" v-for="item in filteredTodos" v-bind:key="item.id">
-          <div class="d-flex">
-            <div class="p-1 move-icon">
-              <font-awesome-icon icon="ellipsis-v" size="xs"/>
-            </div>
-            <div class="p-1"  @click="doChangeState(item)">
-              <span class="circle-button del" v-bind:class="badgeColor(item.state)"></span>
-            </div>
-            <div class="p-1 flex-grow-1 no-wrap todo-text" v-bind:title="item.comment">
-              {{ item.comment }}
-            </div>
-            <div class="p-1" @click="editComment(item)">
-              <font-awesome-icon icon="edit" size="xs" class="del"/>
-            </div>
-            <div class="p-1" @click="doRemove(item)">
-              <span class="del">×</span>
-            </div>
-          </div>
-        </div>
+        <todo-item class="list-group-item list-group-item-action list-style"
+          v-for="item in filteredTodos"
+          v-bind:key="item.id"
+          v-bind:id="item.id"
+          v-bind:comment="item.comment"
+          v-bind:state="item.state"
+          @changeState="doChangeState"
+          @edit="editComment"
+          @remove="doRemove"></todo-item>
       </draggable>
     </div>
 
@@ -61,6 +51,8 @@
 <script>
 import Storage from '../util/localStorage'
 import draggable from 'vuedraggable'
+import StateColor from '../util/StateColor'
+import TodoItem from './TodoItem.vue'
 
 /**
  * フィルターしたTodoを取得
@@ -75,10 +67,15 @@ function getFilterdTodos (array, state) {
   }
 }
 
+function findbyId (array, id) {
+  let index = array.findIndex(v => v.id === id)
+  return array[index]
+}
+
 export default {
   name: 'TodoList',
   components: {
-    draggable
+    draggable, TodoItem
   },
   data () {
     return {
@@ -120,7 +117,8 @@ export default {
     /**
      * ステータスを変更する
      */
-    doChangeState: function (item) {
+    doChangeState: function (id) {
+      let item = findbyId(this.todos, id)
       switch (item.state) {
         case 0:
           item.state = 1
@@ -136,16 +134,17 @@ export default {
     /**
      * 削除
      */
-    doRemove: function (item) {
-      let index = this.todos.indexOf(item)
+    doRemove: function (id) {
+      let index = this.todos.findIndex(v => v.id === id)
       this.todos.splice(index, 1)
     },
     /**
      * コメント編集
      */
-    editComment: function (item) {
+    editComment: function (id) {
       this.isModal = true
       let comment = this.$refs.comment
+      let item = findbyId(this.todos, id)
       comment.value = item.comment
       comment.focus()
       this.editingItem = item
@@ -171,16 +170,7 @@ export default {
      * ステータスの色
      */
     badgeColor: function (state) {
-      switch (state) {
-        case 0:
-          return 'badge-light circle-button-border'
-        case 1:
-          return 'badge-warning'
-        case 2:
-          return 'badge-success'
-        default:
-          return 'badge-info'
-      }
+      return StateColor.getColor(state)
     },
     /**
      * ドラッグ終了時
@@ -231,44 +221,11 @@ export default {
 </script>
 
 <style scoped>
-.no-wrap {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.move-icon {
-  cursor: move;
-}
-
-.todo-text {
-  text-align: left;
-}
-
-.del {
-  cursor: pointer;
-}
+@import '../assets/common.css';
 
 div.list-style {
   padding: 0.25rem 0.5rem;
   background-color: #faf9f9;
-}
-
-.circle-button {
-  width: 22px;
-  height: 22px;
-  margin: auto;
-  text-decoration: none;
-  display: block;
-  text-align: center;
-  color: #FFFFFF;
-  border-radius: 50%;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-}
-
-.circle-button-border {
-  border: 1px solid #000000;
 }
 
 /* ドラッグするアイテム */
