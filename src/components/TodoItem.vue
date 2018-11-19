@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import StateColor from '../util/StateColor'
+import { getStateColor } from '../util/StateColor'
 
 export default {
   name: 'todo-item',
@@ -39,7 +39,7 @@ export default {
       this.$emit('changeState', this.id)
     },
     badgeColor: function (state) {
-      return StateColor.getColor(state)
+      return getStateColor(state)
     },
     editEventHandler: function () {
       this.$emit('edit', this.id)
