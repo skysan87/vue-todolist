@@ -51,8 +51,9 @@
 <script>
 import Storage from '../util/localStorage'
 import draggable from 'vuedraggable'
-import StateColor from '../util/StateColor'
+import { getStateColor } from '../util/StateColor'
 import TodoItem from './TodoItem.vue'
+import { Todo } from '../util/Todo'
 
 /**
  * フィルターしたTodoを取得
@@ -106,11 +107,8 @@ export default {
         this.editingItem = null
         this.isModal = false
       } else {
-        this.todos.push({
-          id: this.lastUid++,
-          comment: comment.value,
-          state: 0
-        })
+        let todo = new Todo(this.lastUid++, comment.value, 0)
+        this.todos.push(todo)
       }
       comment.value = ''
     },
@@ -170,7 +168,7 @@ export default {
      * ステータスの色
      */
     badgeColor: function (state) {
-      return StateColor.getColor(state)
+      return getStateColor(state)
     },
     /**
      * ドラッグ終了時
