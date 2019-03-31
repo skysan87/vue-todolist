@@ -17,7 +17,7 @@
     <div>
       <label class="p-2" v-for="viewOp in options" v-bind:key="viewOp.value" >
         <input type="radio" v-model="filterOption" v-bind:value="viewOp.value">
-        <span>{{ viewOp.label }}</span>
+        <span class="status-label">{{ viewOp.label }}</span>
         <span class="badge" v-bind:class="badgeColor(viewOp.value)">
           {{ todoCounts(viewOp.value) }}
         </span>
@@ -26,7 +26,7 @@
 
     <div class="list-group">
       <draggable v-model="filteredTodos" @end="onDragEnd"
-                 v-bind:options="{handle:'.move-icon'}">
+                 handle=".move-icon">
         <todo-item class="list-group-item list-group-item-action list-style"
           v-for="item in filteredTodos"
           v-bind:key="item.id"
@@ -98,6 +98,7 @@ export default {
     /**
      * todoを追加する
      */
+    // eslint-disable-next-line
     doAdd: function (event, value) {
       let comment = this.$refs.comment
       if (!comment.value.length) return
@@ -224,6 +225,11 @@ export default {
 div.list-style {
   padding: 0.25rem 0.5rem;
   background-color: #faf9f9;
+}
+
+/* ステータスラベル */
+.status-label {
+  margin: 0 5px;
 }
 
 /* ドラッグするアイテム */
