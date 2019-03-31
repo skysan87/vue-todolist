@@ -21,5 +21,14 @@ Vue.jsの勉強で作ったTodoアプリ
 npm install
 
 # serve with hot reload at localhost:8080
-npm run dev
+npm run serve
+
+# Lints and fixes files
+npm run lint
+
+# Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
 ```
+
+## 変更履歴
+* vue-cliをver.3.xに変更したので、システム構成を全面的に更新
