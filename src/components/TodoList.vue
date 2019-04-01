@@ -15,8 +15,15 @@
     </form>
 
     <div>
+      <label class="p-2">
+        <input type="checkbox" :checked="isAllSelected" @click="selectAll">
+        <span class="status-label">All</span>
+        <span class="badge" v-bind:class="badgeColor(-1)">
+          {{ todoCounts(-1) }}
+        </span>
+      </label>
       <label class="p-2" v-for="viewOp in options" v-bind:key="viewOp.value" >
-        <input type="radio" v-model="filterOption" v-bind:value="viewOp.value">
+        <input type="checkbox" v-model="filterOption" v-bind:value="viewOp.value">
         <span class="status-label">{{ viewOp.label }}</span>
         <span class="badge" v-bind:class="badgeColor(viewOp.value)">
           {{ todoCounts(viewOp.value) }}
@@ -54,14 +61,15 @@ import draggable from 'vuedraggable'
 import { getStateColor } from '../util/StateColor'
 import TodoItem from './TodoItem.vue'
 import { Todo } from '../util/Todo'
+import { TaskState } from '../util/TaskState'
 
 /**
  * フィルターしたTodoを取得
  */
-function getFilterdTodos (array, state) {
-  if (state !== -1) {
+function getFilterdTodos (array, state, isAllSelected) {
+  if (isAllSelected === false) {
     return array.filter(el => {
-      return el.state === state
+      return state.includes(el.state)
     })
   } else {
     return array.concat()
@@ -84,12 +92,12 @@ export default {
       filteredTodos: [],
       lastUid: 0,
       options: [
-        { value: -1, label: 'All' },
-        { value: 0, label: 'Todo' },
-        { value: 1, label: 'In Progress' },
-        { value: 2, label: 'Done' }
+        { value: TaskState.Todo.val, label: 'Todo' },
+        { value: TaskState.InProgress.val, label: 'In Progress' },
+        { value: TaskState.Done.val, label: 'Done' }
       ],
-      filterOption: -1, // all
+      filterOption: [TaskState.Todo.val, TaskState.InProgress.val], //初期表示
+      isAllSelected: false,
       isModal: false,
       editingItem: null
     }
@@ -119,14 +127,14 @@ export default {
     doChangeState: function (id) {
       let item = findbyId(this.todos, id)
       switch (item.state) {
-        case 0:
-          item.state = 1
+        case TaskState.Todo.val:
+          item.state = TaskState.InProgress.val
           break
-        case 1:
-          item.state = 2
+        case TaskState.InProgress.val:
+          item.state = TaskState.Done.val
           break
-        case 2:
-          item.state = 0
+        case TaskState.Done.val:
+          item.state = TaskState.Todo.val
           break
       }
     },
@@ -190,18 +198,34 @@ export default {
       let destIndex = this.todos.indexOf(dest)
       this.todos.splice(originalIndex, 1) // remove
       this.todos.splice(destIndex, 0, origin) // insert
-    }
+    },
+    /**
+     * すべて表示
+     */
+    selectAll: function () {
+      if (this.isAllSelected) {
+        this.filterOption = []
+        this.isAllSelected = false
+      } else {
+        this.filterOption = []
+        this.options.forEach(op => 
+          this.filterOption.push(op.value)
+        )
+        this.isAllSelected = true
+      }
+    },
   },
   watch: {
     todos: {
       handler: function (todos) {
         Storage.save(todos)
-        this.filteredTodos = getFilterdTodos(this.todos, this.filterOption)
+        this.filteredTodos = getFilterdTodos(this.todos, this.filterOption, this.isAllSelected)
       },
       deep: true
     },
     filterOption: function (newValue) {
-      this.filteredTodos = getFilterdTodos(this.todos, newValue)
+      this.isAllSelected = newValue.length ===  this.options.length
+      this.filteredTodos = getFilterdTodos(this.todos, newValue, this.isAllSelected)
     }
   },
   created () {
