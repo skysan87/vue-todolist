@@ -1,10 +1,12 @@
+import { TaskState } from './TaskState'
+
 export function getStateColor (state) {
   switch (state) {
-    case 0:
+    case TaskState.Todo.val:
       return 'badge-light circle-button-border'
-    case 1:
+    case TaskState.InProgress.val:
       return 'badge-warning'
-    case 2:
+    case TaskState.Done.val:
       return 'badge-success'
     default:
       return 'badge-info'
