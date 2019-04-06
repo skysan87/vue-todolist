@@ -31,4 +31,5 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ```
 
 ## 変更履歴
+* 完了済みのタスクの削除ボタンを追加
 * vue-cliをver.3.xに変更したので、システム構成を全面的に更新
