@@ -29,6 +29,7 @@
           {{ todoCounts(viewOp.value) }}
         </span>
       </label>
+      <button class="ml-2 btn btn-outline-danger btn-sm" @click="deleteDone">Clear Done</button>
     </div>
 
     <div class="list-group">
@@ -214,6 +215,13 @@ export default {
         this.isAllSelected = true
       }
     },
+    /**
+     * 完了済みのタスクを削除
+     */
+    deleteDone: function() {
+      let options = [TaskState.Todo.val, TaskState.InProgress.val]
+      this.todos = getFilterdTodos(this.todos, options, false)
+    }
   },
   watch: {
     todos: {
