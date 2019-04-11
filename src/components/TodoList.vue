@@ -5,6 +5,9 @@
     <form class="fixed-top add-form center-block" style="padding-top: 20px; margin: 0 50px;" @submit.prevent="doAdd">
       <div class="input-group input-group-sm mb-3">
         <div class="input-group-prepend">
+          <router-link to="/kanban" class="input-group-text">
+            <font-awesome-icon icon="clipboard-list" size="lg"/>
+          </router-link>
           <label class="input-group-text" for="comment">Todo</label>
         </div>
         <input type="text" class="form-control" id="comment" ref="comment">

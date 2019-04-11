@@ -6,10 +6,10 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import BootstrapVue from 'bootstrap-vue'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEllipsisV, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faEllipsisV, faEdit, faClipboardList } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faEllipsisV, faEdit)
+library.add(faEllipsisV, faEdit, faClipboardList)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
