@@ -26,6 +26,9 @@ npm run serve
 # Lints and fixes files
 npm run lint
 
+# create production files
+npm run build
+
 # Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 ```
