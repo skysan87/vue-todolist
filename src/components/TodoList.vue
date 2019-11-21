@@ -14,7 +14,7 @@
       </div>
     </form>
 
-    <div>
+    <div class="status-boxes">
       <label class="p-2">
         <input type="checkbox" :checked="isAllSelected" @click="selectAll">
         <span class="status-label">All</span>
@@ -259,6 +259,31 @@ div.list-style {
   background-color: #faf9f9;
 }
 
+button {
+  margin: .25rem;
+  font-size: 14px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 5px;
+  text-align: center;
+  border-radius: .25rem;
+  vertical-align: baseline;
+  font-size: 75%;
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+.status-boxes {
+  display: flex;
+  justify-content: center;
+}
+
+.status-boxes label {
+  padding: .5rem;
+}
+
 /* ステータスラベル */
 .status-label {
   margin: 0 5px;
@@ -266,10 +291,11 @@ div.list-style {
 
 /* ドラッグするアイテム */
 .sortable-chosen {
-    opacity: 0.3;
+  opacity: 0.3;
 }
+
 .sortable-ghost {
-    background-color:#979797;
+  background-color:#979797;
 }
 
 /* モーダル */
