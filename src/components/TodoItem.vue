@@ -1,19 +1,19 @@
 <template>
 <div>
-  <div class="d-flex">
-    <div class="p-1 move-icon">
+  <div class="flex-container">
+    <div class="move-icon">
       <font-awesome-icon icon="ellipsis-v" size="xs"/>
     </div>
-    <div class="p-1"  @click="changeEventHandler">
+    <div class=""  @click="changeEventHandler">
       <span class="circle-button pointer" v-bind:class="badgeColor(state)"></span>
     </div>
-    <div class="p-1 flex-grow-1 no-wrap todo-text" v-bind:title="comment">
+    <div class="flex-geow-1 no-wrap todo-text" v-bind:title="comment">
       {{ comment }}
     </div>
-    <div class="p-1" @click="editEventHandler">
+    <div class="" @click="editEventHandler">
       <font-awesome-icon icon="edit" size="xs" class="pointer"/>
     </div>
-    <div class="p-1" @click="removeEventHandler">
+    <div class="" @click="removeEventHandler">
       <span class="pointer">×</span>
     </div>
   </div>
@@ -54,6 +54,18 @@ export default {
 <style>
 @import '../assets/common.css';
 
+.flex-container {
+  width: 100%;
+  display: flex;
+}
+
+.flex-container div {
+  padding: .25rem;
+}
+
+.flex-geow-1 {
+  flex-grow: 1;
+}
 .move-icon {
   cursor: move;
 }
