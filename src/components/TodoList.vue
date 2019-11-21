@@ -330,12 +330,15 @@ div.list-style {
 
 .list-group {
   border-left: 1px solid #979797;
-  border-bottom: 1px solid #979797;
   border-right: 1px solid #979797;
 }
 
-.list-group-item {
+.list-group-item:first-child {
   border-top: 1px solid #979797;
+}
+
+.list-group-item {
+  border-bottom: 1px solid #979797;
 }
 
 /* ドラッグするアイテム */
