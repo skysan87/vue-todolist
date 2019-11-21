@@ -1,50 +1,48 @@
 <template>
   <div class="container">
 
-    <!-- 登録フォーム -->
-    <form class="fixed-top add-form center-block" style="padding-top: 20px; margin: 0 50px;" @submit.prevent="doAdd">
-      <div class="input-group input-group-sm mb-3">
-        <div class="input-group-prepend">
-          <label class="input-group-text" for="comment">Todo</label>
-        </div>
-        <input type="text" class="form-control" id="comment" ref="comment">
-        <div class="input-group-prepend">
-          <button type="submit" class="btn btn-primary">OK</button>
-        </div>
-      </div>
-    </form>
+    <div class="fix-top">
+      <!-- 登録フォーム -->
+      <form class="input-form" @submit.prevent="doAdd">
+        <label class="form-label" for="comment">Todo</label>
+        <input class="input-comment flex-grow-1" type="text" id="comment" ref="comment">
+        <button type="submit" class="btn-regular">OK</button>
+      </form>
 
-    <div class="status-boxes">
-      <label class="p-2">
-        <input type="checkbox" :checked="isAllSelected" @click="selectAll">
-        <span class="status-label">All</span>
-        <span class="badge" v-bind:class="badgeColor(-1)">
-          {{ todoCounts(-1) }}
-        </span>
-      </label>
-      <label class="p-2" v-for="viewOp in options" v-bind:key="viewOp.value" >
-        <input type="checkbox" v-model="filterOption" v-bind:value="viewOp.value">
-        <span class="status-label">{{ viewOp.label }}</span>
-        <span class="badge" v-bind:class="badgeColor(viewOp.value)">
-          {{ todoCounts(viewOp.value) }}
-        </span>
-      </label>
-      <button class="btn-red" @click="deleteDone">Clear Done</button>
+      <div class="status-boxes">
+        <label class="p-2">
+          <input type="checkbox" :checked="isAllSelected" @click="selectAll">
+          <span class="status-label">All</span>
+          <span class="badge" v-bind:class="badgeColor(-1)">
+            {{ todoCounts(-1) }}
+          </span>
+        </label>
+        <label class="p-2" v-for="viewOp in options" v-bind:key="viewOp.value" >
+          <input type="checkbox" v-model="filterOption" v-bind:value="viewOp.value">
+          <span class="status-label">{{ viewOp.label }}</span>
+          <span class="badge" v-bind:class="badgeColor(viewOp.value)">
+            {{ todoCounts(viewOp.value) }}
+          </span>
+        </label>
+        <button class="btn-red" @click="deleteDone">Clear Done</button>
+      </div>
     </div>
 
-    <div class="list-group">
-      <draggable v-model="filteredTodos" @end="onDragEnd"
-                 handle=".move-icon">
-        <todo-item class="list-group-item list-style"
-          v-for="item in filteredTodos"
-          v-bind:key="item.id"
-          v-bind:id="item.id"
-          v-bind:comment="item.comment"
-          v-bind:state="item.state"
-          @changeState="doChangeState"
-          @edit="editComment"
-          @remove="doRemove"></todo-item>
-      </draggable>
+    <div class="main-content">
+      <div class="list-group">
+        <draggable v-model="filteredTodos" @end="onDragEnd"
+                  handle=".move-icon">
+          <todo-item class="list-group-item list-style"
+            v-for="item in filteredTodos"
+            v-bind:key="item.id"
+            v-bind:id="item.id"
+            v-bind:comment="item.comment"
+            v-bind:state="item.state"
+            @changeState="doChangeState"
+            @edit="editComment"
+            @remove="doRemove"></todo-item>
+        </draggable>
+      </div>
     </div>
 
     <!-- 編集中のオーバーレイ -->
@@ -261,14 +259,48 @@ export default {
   margin: 0 auto;
 }
 
+.fix-top {
+  top: 0;
+  left: 0;
+  position: fixed;
+  width: 100%;
+  padding: 0 15px;
+  height: 100px;
+  text-align: center;
+  background: white;
+  z-index: 9999;
+}
+
+.input-form {
+  display: flex;
+  width: 100%;
+  padding: 15px 15px 5px 15px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.form-label {
+  display: flex;
+  font-size: 1rem;
+  border: 1px solid #979797;
+  background: #faf9f9;
+  line-height: 1.5;
+  padding: .25rem .5rem;
+  text-align: center;
+  vertical-align: baseline;
+}
+
+.input-comment {
+  font-size: 1rem;
+}
+
+.main-content {
+  padding-top: 100px;
+}
+
 div.list-style {
   padding: 0.25rem 0.5rem;
   background-color: #faf9f9;
-}
-
-button {
-  margin: .25rem;
-  font-size: 14px;
 }
 
 .badge {

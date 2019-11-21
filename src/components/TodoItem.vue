@@ -7,7 +7,7 @@
     <div class=""  @click="changeEventHandler">
       <span class="circle-button pointer" v-bind:class="badgeColor(state)"></span>
     </div>
-    <div class="flex-geow-1 no-wrap todo-text" v-bind:title="comment">
+    <div class="flex-grow-1 no-wrap todo-text" v-bind:title="comment">
       {{ comment }}
     </div>
     <div class="" @click="editEventHandler">
@@ -63,9 +63,6 @@ export default {
   padding: .25rem;
 }
 
-.flex-geow-1 {
-  flex-grow: 1;
-}
 .move-icon {
   cursor: move;
 }
