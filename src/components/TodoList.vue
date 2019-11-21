@@ -35,7 +35,7 @@
     <div class="list-group">
       <draggable v-model="filteredTodos" @end="onDragEnd"
                  handle=".move-icon">
-        <todo-item class="list-group-item list-group-item-action list-style"
+        <todo-item class="list-group-item list-style"
           v-for="item in filteredTodos"
           v-bind:key="item.id"
           v-bind:id="item.id"
@@ -254,6 +254,13 @@ export default {
 <style scoped>
 @import '../assets/common.css';
 
+.container {
+  width: 100%;
+  max-width: 720px;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
 div.list-style {
   padding: 0.25rem 0.5rem;
   background-color: #faf9f9;
@@ -287,6 +294,16 @@ button {
 /* ステータスラベル */
 .status-label {
   margin: 0 5px;
+}
+
+.list-group {
+  border-left: 1px solid #979797;
+  border-bottom: 1px solid #979797;
+  border-right: 1px solid #979797;
+}
+
+.list-group-item {
+  border-top: 1px solid #979797;
 }
 
 /* ドラッグするアイテム */
