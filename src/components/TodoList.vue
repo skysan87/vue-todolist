@@ -29,7 +29,7 @@
           {{ todoCounts(viewOp.value) }}
         </span>
       </label>
-      <button class="ml-2 btn btn-outline-danger btn-sm" @click="deleteDone">Clear Done</button>
+      <button class="btn-red" @click="deleteDone">Clear Done</button>
     </div>
 
     <div class="list-group">
@@ -209,7 +209,7 @@ export default {
         this.isAllSelected = false
       } else {
         this.filterOption = []
-        this.options.forEach(op => 
+        this.options.forEach(op =>
           this.filterOption.push(op.value)
         )
         this.isAllSelected = true
