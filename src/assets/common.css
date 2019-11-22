@@ -61,12 +61,21 @@
   line-height: 1.5;
 }
 
+.btn-gray {
+  padding: .25rem .5rem;
+  color: black;
+  background-color: #aca8a8;
+  font-size: .875rem;
+  line-height: 1.5;
+}
+
 .flex-grow-1 {
   flex-grow: 1;
 }
 
 input[type="text"] {
   padding: 2px 4px;
+  font-size: 1rem;
 }
 
 button {

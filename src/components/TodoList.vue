@@ -45,12 +45,10 @@
       </div>
     </div>
 
-    <!-- 編集中のオーバーレイ -->
-    <transition name="modal" v-if="isModal">
-      <div class="overlay" @click="cancelEdit()">
-      </div>
-    </transition>
-
+    <modal-dialog v-if="isModal"
+      @close="closeModal"
+      v-bind:todo="editingItem"
+      ></modal-dialog>
   </div>
 </template>
 
@@ -59,6 +57,7 @@ import Storage from '../util/localStorage'
 import draggable from 'vuedraggable'
 import { getStateColor } from '../util/StateColor'
 import TodoItem from './TodoItem.vue'
+import ModalDialog from './ModalDialog.vue'
 import { Todo } from '../util/Todo'
 import { TaskState } from '../util/TaskState'
 
@@ -83,7 +82,7 @@ function findbyId (array, id) {
 export default {
   name: 'TodoList',
   components: {
-    draggable, TodoItem
+    draggable, TodoItem, ModalDialog
   },
   data () {
     return {
@@ -110,14 +109,8 @@ export default {
       let comment = this.$refs.comment
       if (!comment.value.length) return
 
-      if (this.isModal && this.editingItem !== null) {
-        this.editingItem.comment = comment.value
-        this.editingItem = null
-        this.isModal = false
-      } else {
-        let todo = new Todo(this.lastUid++, comment.value, 0)
-        this.todos.push(todo)
-      }
+      let todo = new Todo(this.lastUid++, comment.value, 0)
+      this.todos.push(todo)
       comment.value = ''
     },
     /**
@@ -149,19 +142,14 @@ export default {
      */
     editComment: function (id) {
       this.isModal = true
-      let comment = this.$refs.comment
       let item = findbyId(this.todos, id)
-      comment.value = item.comment
-      comment.focus()
       this.editingItem = item
     },
     /**
-     * 編集キャンセル
+     * モーダルを閉じる
      */
-    cancelEdit: function () {
+    closeModal: function() {
       this.isModal = false
-      let comment = this.$refs.comment
-      comment.value = ''
       this.editingItem = null
     },
     /**
@@ -268,7 +256,7 @@ export default {
   height: 100px;
   text-align: center;
   background: white;
-  z-index: 9999;
+  z-index: 999;
 }
 
 .input-form {
@@ -288,10 +276,6 @@ export default {
   padding: .25rem .5rem;
   text-align: center;
   vertical-align: baseline;
-}
-
-.input-comment {
-  font-size: 1rem;
 }
 
 .main-content {
@@ -348,23 +332,6 @@ div.list-style {
 
 .sortable-ghost {
   background-color:#979797;
-}
-
-/* モーダル */
-.overlay {
-  background: rgba(0, 0, 0, 0.8);
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 900;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 </style>
