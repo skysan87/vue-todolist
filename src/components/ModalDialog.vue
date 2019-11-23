@@ -8,7 +8,7 @@
           </div>
 
           <div class="modal-body">
-            <input class="input-text" type="text" v-model="comment">
+            <input class="input-text" type="text" v-model="comment" ref="modalcomment">
           </div>
 
           <div class="modal-footer">
@@ -48,6 +48,9 @@ export default {
   created () {
     // モーダルが表示されるごとに呼ばれる
     this.comment = this.todo.comment
+  },
+  mounted () {
+    this.$refs.modalcomment.focus();
   }
 }
 </script>
