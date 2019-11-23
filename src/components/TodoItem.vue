@@ -13,9 +13,11 @@
     <div class="" @click="editEventHandler">
       <font-awesome-icon icon="edit" size="xs" class="pointer"/>
     </div>
-    <div class="" @click="removeEventHandler" v-show="canRemove">
-      <span class="pointer">×</span>
-    </div>
+    <transition name="slide-fade">
+      <div class="" @click="removeEventHandler" v-show="canRemove">
+        <span class="pointer">×</span>
+      </div>
+    </transition>
   </div>
 </div>
 </template>
@@ -78,6 +80,16 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* transition:slide-face */
+.slide-fade-enter-active, .slide-fade-leave-active {
+  transition: all .3s ease;
+}
+
+.slide-fade-enter, .slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
 }
 
 </style>
