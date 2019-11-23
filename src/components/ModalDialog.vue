@@ -11,6 +11,9 @@
           <div class="modal-body">
             <input class="input-text" type="text" v-model="comment" ref="modalcomment" />
           </div>
+          <div class="modal-body">
+            <textarea v-model="note" maxlength="1000" rows="3"/>
+          </div>
 
           <div class="modal-footer">
             <button class="btn-regular modal-default-button" @click="update">OK</button>
@@ -33,12 +36,14 @@ export default {
   },
   data() {
     return {
-      comment: ""
+      comment: "",
+      note: ""
     };
   },
   methods: {
     update: function() {
-      this.todo.comment = this.comment;
+      this.todo["comment"] = this.comment;
+      this.todo["note"] = this.note;
       this.$emit("close");
     },
     cancel: function() {
@@ -53,6 +58,7 @@ export default {
   created() {
     // モーダルが表示されるごとに呼ばれる
     this.comment = this.todo.comment;
+    this.note = this.todo.note || "";
     document.addEventListener("focusin", this.checkFocus, false);
   },
   mounted() {
@@ -98,11 +104,24 @@ export default {
 }
 
 .modal-body {
-  margin: 20px 0;
+  margin: 10px 0;
+}
+
+.modal-footer {
+  margin: 5px 0;
+  height: 20px;
 }
 
 .input-text {
   width: 100%;
+  line-height: 1.5;
+}
+
+textarea {
+  width: 100%;
+  resize: none;
+  padding: 5px 10px;
+  font-size: 14px;
   line-height: 1.5;
 }
 
