@@ -13,7 +13,7 @@
     <div class="" @click="editEventHandler">
       <font-awesome-icon icon="edit" size="xs" class="pointer"/>
     </div>
-    <div class="" @click="removeEventHandler">
+    <div class="" @click="removeEventHandler" v-show="canRemove">
       <span class="pointer">×</span>
     </div>
   </div>
@@ -28,7 +28,8 @@ export default {
   props: {
     id: Number,
     comment: String,
-    state: Number
+    state: Number,
+    canRemove: Boolean
   },
   data () {
     return {
