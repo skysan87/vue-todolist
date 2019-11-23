@@ -10,14 +10,14 @@
       </form>
 
       <div class="status-boxes">
-        <label class="p-2">
+        <label>
           <input type="checkbox" :checked="isAllSelected" @click="selectAll">
           <span class="status-label">All</span>
           <span class="badge" v-bind:class="badgeColor(-1)">
             {{ todoCounts(-1) }}
           </span>
         </label>
-        <label class="p-2" v-for="viewOp in options" v-bind:key="viewOp.value" >
+        <label v-for="viewOp in options" v-bind:key="viewOp.value" >
           <input type="checkbox" v-model="filterOption" v-bind:value="viewOp.value">
           <span class="status-label">{{ viewOp.label }}</span>
           <span class="badge" v-bind:class="badgeColor(viewOp.value)">
@@ -25,7 +25,7 @@
           </span>
         </label>
         <button class="btn-red" @click="deleteDone">Clear Done</button>
-        <button class="btn-switch-green" v-bind:class="{'switch-on': canRemove}" @click="canRemove = !canRemove">Edit Mode</button>
+        <button class="btn-switch-green" v-bind:class="{'switch-on': canRemove}" @click="canRemove = !canRemove">Edit</button>
       </div>
     </div>
 
@@ -279,7 +279,7 @@ export default {
   padding-top: 100px;
 }
 
-div.list-style {
+.list-style {
   padding: 0.25rem 0.5rem;
   background-color: #faf9f9;
 }
@@ -312,6 +312,7 @@ div.list-style {
 .list-group {
   border-left: 1px solid #979797;
   border-right: 1px solid #979797;
+  margin: 0 15px;
 }
 
 .list-group-item:first-child {
