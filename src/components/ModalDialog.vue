@@ -3,22 +3,22 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
+          <!-- フォーカスアウト防止 -->
+          <div tabindex="0" class="dummy"></div>
 
-          <div class="modal-header">
-          </div>
+          <div class="modal-header"></div>
 
           <div class="modal-body">
-            <input class="input-text" type="text" v-model="comment" ref="modalcomment">
+            <input class="input-text" type="text" v-model="comment" ref="modalcomment" />
           </div>
 
           <div class="modal-footer">
-            <button class="btn-regular modal-default-button" @click="update">
-              OK
-            </button>
-            <button class="btn-gray modal-default-button" @click="cancel">
-              キャンセル
-            </button>
+            <button class="btn-regular modal-default-button" @click="update">OK</button>
+            <button class="btn-gray modal-default-button" @click="cancel">キャンセル</button>
           </div>
+
+          <!-- フォーカスアウト防止 -->
+          <div tabindex="0" class="dummy"></div>
         </div>
       </div>
     </div>
@@ -27,36 +27,45 @@
 
 <script>
 export default {
-  name: 'moda-dialog',
+  name: "modal-dialog",
   props: {
-    todo: Object,
+    todo: Object
   },
   data() {
     return {
-      comment: ''
-    }
+      comment: ""
+    };
   },
   methods: {
     update: function() {
-      this.todo.comment = this.comment
-      this.$emit('close')
+      this.todo.comment = this.comment;
+      this.$emit("close");
     },
     cancel: function() {
-      this.$emit('close')
+      this.$emit("close");
+    },
+    checkFocus: function(ev) {
+      if (ev.target !== null && ev.target.className == 'dummy') {
+        this.$refs.modalcomment.focus();
+      }
     }
   },
-  created () {
+  created() {
     // モーダルが表示されるごとに呼ばれる
-    this.comment = this.todo.comment
+    this.comment = this.todo.comment;
+    document.addEventListener("focusin", this.checkFocus, false);
   },
-  mounted () {
+  mounted() {
     this.$refs.modalcomment.focus();
+  },
+  beforeDestroy() {
+    document.removeEventListener("focusin", this.checkFocus, false);
   }
-}
+};
 </script>
 
 <style scoped>
-@import '../assets/common.css';
+@import "../assets/common.css";
 
 .modal-mask {
   position: fixed;
@@ -66,9 +75,9 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: table;
-  transition: opacity .1s ease;
+  transition: opacity 0.1s ease;
 }
 
 .modal-wrapper {
@@ -83,8 +92,8 @@ export default {
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-  transition: all .3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
   font-family: Helvetica, Arial, sans-serif;
 }
 
