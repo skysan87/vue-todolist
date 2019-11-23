@@ -5,6 +5,7 @@ export default class Storage {
     let todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
     todos.forEach((todo, index) => {
       todo.id = index
+      todo["note"] = todo.note || ""
     })
     return todos
   }

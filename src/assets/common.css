@@ -41,18 +41,6 @@
   background-color: #17a2b8;
 }
 
-.btn-red {
-  color: #dc3545;
-  border-color: #dc3545;
-  margin: .25rem;
-  padding: 2px 4px;
-}
-
-.btn-red:hover {
-  color: #fff;
-  background-color: #dc3545;
-}
-
 .btn-regular {
   padding: .25rem .5rem;
   color: #fff;
