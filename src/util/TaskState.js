@@ -1,11 +1,14 @@
 export const TaskState = {
   Todo: {
-    val: 0
+    value: 0,
+    label: 'Todo'
   },
   InProgress: {
-    val: 1
+    value: 1,
+    label: 'In Progress'
   },
   Done: {
-    val: 2
+    value: 2,
+    label: 'Done'
   }
 }

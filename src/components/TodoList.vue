@@ -89,12 +89,8 @@ export default {
       todos: [],
       filteredTodos: [],
       lastUid: 0,
-      options: [
-        { value: TaskState.Todo.val, label: 'Todo' },
-        { value: TaskState.InProgress.val, label: 'In Progress' },
-        { value: TaskState.Done.val, label: 'Done' }
-      ],
-      filterOption: [TaskState.Todo.val, TaskState.InProgress.val], //初期表示
+      options: Object.values(TaskState),
+      filterOption: [TaskState.Todo.value, TaskState.InProgress.value], //初期表示
       isAllSelected: false,
       isModal: false,
       editingItem: null,
@@ -110,7 +106,7 @@ export default {
       let comment = this.$refs.comment
       if (!comment.value.length) return
 
-      let todo = new Todo(this.lastUid++, comment.value, 0)
+      let todo = new Todo(this.lastUid++, comment.value, TaskState.Todo.value)
       this.todos.push(todo)
       comment.value = ''
     },
@@ -120,14 +116,14 @@ export default {
     doChangeState: function (id) {
       let item = findbyId(this.todos, id)
       switch (item.state) {
-        case TaskState.Todo.val:
-          item.state = TaskState.InProgress.val
+        case TaskState.Todo.value:
+          item.state = TaskState.InProgress.value
           break
-        case TaskState.InProgress.val:
-          item.state = TaskState.Done.val
+        case TaskState.InProgress.value:
+          item.state = TaskState.Done.value
           break
-        case TaskState.Done.val:
-          item.state = TaskState.Todo.val
+        case TaskState.Done.value:
+          item.state = TaskState.Todo.value
           break
       }
     },
@@ -206,7 +202,7 @@ export default {
      * 完了済みのタスクを削除
      */
     deleteDone: function() {
-      let options = [TaskState.Todo.val, TaskState.InProgress.val]
+      let options = [TaskState.Todo.value, TaskState.InProgress.value]
       this.todos = getFilterdTodos(this.todos, options, false)
     }
   },
