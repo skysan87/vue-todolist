@@ -6,7 +6,14 @@
           <!-- フォーカスアウト防止 -->
           <div tabindex="0" class="dummy"></div>
 
-          <div class="modal-header"></div>
+          <div class="modal-body">
+            <div class="status-labels">
+              <label class="status-label" v-for="viewOp in options" v-bind:key="viewOp.value" >
+                <input type="radio" v-model="state" v-bind:value="viewOp.value">
+                <span class="">{{ viewOp.label }}</span>
+              </label>
+            </div>
+          </div>
 
           <div class="modal-body">
             <input class="input-text" type="text" v-model="comment" ref="modalcomment" />
@@ -29,6 +36,8 @@
 </template>
 
 <script>
+import { TaskState } from '../util/TaskState'
+
 export default {
   name: "modal-dialog",
   props: {
@@ -37,13 +46,16 @@ export default {
   data() {
     return {
       comment: "",
-      note: ""
+      note: "",
+      state: "",
+      options: Object.values(TaskState)
     };
   },
   methods: {
     update: function() {
       this.todo["comment"] = this.comment;
       this.todo["note"] = this.note;
+      this.todo["state"] = this.state;
       this.$emit("close");
     },
     cancel: function() {
@@ -57,8 +69,9 @@ export default {
   },
   created() {
     // モーダルが表示されるごとに呼ばれる
-    this.comment = this.todo.comment;
-    this.note = this.todo.note || "";
+    this.comment = this.todo.comment
+    this.note = this.todo.note || ""
+    this.state = this.todo.state
     document.addEventListener("focusin", this.checkFocus, false);
   },
   mounted() {
@@ -128,6 +141,15 @@ textarea {
 .modal-default-button {
   margin-left: 10px;
   float: right;
+}
+
+.status-label span {
+  margin: 0 5px;
+}
+
+.status-labels {
+  display: flex;
+  justify-content: space-evenly;
 }
 
 /* transition="modal"に適用される */
