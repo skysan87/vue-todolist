@@ -10,14 +10,14 @@
       </form>
 
       <div class="status-boxes">
-        <label class="p-2">
+        <label>
           <input type="checkbox" :checked="isAllSelected" @click="selectAll">
           <span class="status-label">All</span>
           <span class="badge" v-bind:class="badgeColor(-1)">
             {{ todoCounts(-1) }}
           </span>
         </label>
-        <label class="p-2" v-for="viewOp in options" v-bind:key="viewOp.value" >
+        <label v-for="viewOp in options" v-bind:key="viewOp.value" >
           <input type="checkbox" v-model="filterOption" v-bind:value="viewOp.value">
           <span class="status-label">{{ viewOp.label }}</span>
           <span class="badge" v-bind:class="badgeColor(viewOp.value)">
@@ -25,6 +25,7 @@
           </span>
         </label>
         <button class="btn-red" @click="deleteDone">Clear Done</button>
+        <button class="btn-switch-green" v-bind:class="{'switch-on': canRemove}" @click="canRemove = !canRemove">Edit</button>
       </div>
     </div>
 
@@ -35,9 +36,8 @@
           <todo-item class="list-group-item list-style"
             v-for="item in filteredTodos"
             v-bind:key="item.id"
-            v-bind:id="item.id"
-            v-bind:comment="item.comment"
-            v-bind:state="item.state"
+            v-bind:todo="item"
+            v-bind:canRemove="canRemove"
             @changeState="doChangeState"
             @edit="editComment"
             @remove="doRemove"></todo-item>
@@ -89,15 +89,12 @@ export default {
       todos: [],
       filteredTodos: [],
       lastUid: 0,
-      options: [
-        { value: TaskState.Todo.val, label: 'Todo' },
-        { value: TaskState.InProgress.val, label: 'In Progress' },
-        { value: TaskState.Done.val, label: 'Done' }
-      ],
-      filterOption: [TaskState.Todo.val, TaskState.InProgress.val], //初期表示
+      options: Object.values(TaskState),
+      filterOption: [TaskState.Todo.value, TaskState.InProgress.value], //初期表示
       isAllSelected: false,
       isModal: false,
-      editingItem: null
+      editingItem: null,
+      canRemove: false
     }
   },
   methods: {
@@ -109,7 +106,7 @@ export default {
       let comment = this.$refs.comment
       if (!comment.value.length) return
 
-      let todo = new Todo(this.lastUid++, comment.value, 0)
+      let todo = new Todo(this.lastUid++, comment.value, TaskState.Todo.value)
       this.todos.push(todo)
       comment.value = ''
     },
@@ -119,14 +116,14 @@ export default {
     doChangeState: function (id) {
       let item = findbyId(this.todos, id)
       switch (item.state) {
-        case TaskState.Todo.val:
-          item.state = TaskState.InProgress.val
+        case TaskState.Todo.value:
+          item.state = TaskState.InProgress.value
           break
-        case TaskState.InProgress.val:
-          item.state = TaskState.Done.val
+        case TaskState.InProgress.value:
+          item.state = TaskState.Done.value
           break
-        case TaskState.Done.val:
-          item.state = TaskState.Todo.val
+        case TaskState.Done.value:
+          item.state = TaskState.Todo.value
           break
       }
     },
@@ -205,7 +202,7 @@ export default {
      * 完了済みのタスクを削除
      */
     deleteDone: function() {
-      let options = [TaskState.Todo.val, TaskState.InProgress.val]
+      let options = [TaskState.Todo.value, TaskState.InProgress.value]
       this.todos = getFilterdTodos(this.todos, options, false)
     }
   },
@@ -282,7 +279,7 @@ export default {
   padding-top: 100px;
 }
 
-div.list-style {
+.list-style {
   padding: 0.25rem 0.5rem;
   background-color: #faf9f9;
 }
@@ -315,6 +312,7 @@ div.list-style {
 .list-group {
   border-left: 1px solid #979797;
   border-right: 1px solid #979797;
+  margin: 0 15px;
 }
 
 .list-group-item:first-child {
@@ -334,4 +332,29 @@ div.list-style {
   background-color:#979797;
 }
 
+.btn-switch-green {
+  color: green;
+  border-color: green;
+  margin: .25rem;
+  padding: 2px 4px;
+  outline: none;
+}
+
+.switch-on {
+  color: #fff;
+  background-color: green;
+}
+
+.btn-red {
+  color: #dc3545;
+  border-color: #dc3545;
+  margin: .25rem;
+  padding: 2px 4px;
+  outline: none;
+}
+
+.btn-red:hover {
+  color: #fff;
+  background-color: #dc3545;
+}
 </style>

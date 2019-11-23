@@ -5,17 +5,19 @@
       <font-awesome-icon icon="ellipsis-v" size="xs"/>
     </div>
     <div class=""  @click="changeEventHandler">
-      <span class="circle-button pointer" v-bind:class="badgeColor(state)"></span>
+      <span class="circle-button pointer" v-bind:class="badgeColor(todo.state)"></span>
     </div>
-    <div class="flex-grow-1 no-wrap todo-text" v-bind:title="comment">
-      {{ comment }}
+    <div class="flex-grow-1 no-wrap todo-text" v-bind:title="todo.comment">
+      {{ todo.comment }}
     </div>
     <div class="" @click="editEventHandler">
       <font-awesome-icon icon="edit" size="xs" class="pointer"/>
     </div>
-    <div class="" @click="removeEventHandler">
-      <span class="pointer">×</span>
-    </div>
+    <transition name="slide-fade">
+      <div class="" @click="removeEventHandler" v-show="canRemove">
+        <span class="pointer">×</span>
+      </div>
+    </transition>
   </div>
 </div>
 </template>
@@ -26,9 +28,8 @@ import { getStateColor } from '../util/StateColor'
 export default {
   name: 'todo-item',
   props: {
-    id: Number,
-    comment: String,
-    state: Number
+    todo: Object,
+    canRemove: Boolean
   },
   data () {
     return {
@@ -36,16 +37,16 @@ export default {
   },
   methods: {
     changeEventHandler: function () {
-      this.$emit('changeState', this.id)
+      this.$emit('changeState', this.todo.id)
     },
     badgeColor: function (state) {
       return getStateColor(state)
     },
     editEventHandler: function () {
-      this.$emit('edit', this.id)
+      this.$emit('edit', this.todo.id)
     },
     removeEventHandler: function () {
-      this.$emit('remove', this.id)
+      this.$emit('remove', this.todo.id)
     }
   }
 }
@@ -79,6 +80,16 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* transition:slide-face */
+.slide-fade-enter-active, .slide-fade-leave-active {
+  transition: all .3s ease;
+}
+
+.slide-fade-enter, .slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
 }
 
 </style>
