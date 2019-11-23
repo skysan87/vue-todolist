@@ -25,6 +25,7 @@
           </span>
         </label>
         <button class="btn-red" @click="deleteDone">Clear Done</button>
+        <button class="btn-switch-green" v-bind:class="{'switch-on': canRemove}" @click="canRemove = !canRemove">Edit Mode</button>
       </div>
     </div>
 
@@ -38,6 +39,7 @@
             v-bind:id="item.id"
             v-bind:comment="item.comment"
             v-bind:state="item.state"
+            v-bind:canRemove="canRemove"
             @changeState="doChangeState"
             @edit="editComment"
             @remove="doRemove"></todo-item>
@@ -97,7 +99,8 @@ export default {
       filterOption: [TaskState.Todo.val, TaskState.InProgress.val], //初期表示
       isAllSelected: false,
       isModal: false,
-      editingItem: null
+      editingItem: null,
+      canRemove: false
     }
   },
   methods: {
@@ -334,4 +337,29 @@ div.list-style {
   background-color:#979797;
 }
 
+.btn-switch-green {
+  color: green;
+  border-color: green;
+  margin: .25rem;
+  padding: 2px 4px;
+  outline: none;
+}
+
+.switch-on {
+  color: #fff;
+  background-color: green;
+}
+
+.btn-red {
+  color: #dc3545;
+  border-color: #dc3545;
+  margin: .25rem;
+  padding: 2px 4px;
+  outline: none;
+}
+
+.btn-red:hover {
+  color: #fff;
+  background-color: #dc3545;
+}
 </style>
