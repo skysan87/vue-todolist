@@ -53,31 +53,12 @@
 </template>
 
 <script>
-import Storage from '../util/localStorage'
 import draggable from 'vuedraggable'
-import { getStateColor } from '../util/StateColor'
+import { getStateColor } from '@/util/StateColor'
 import TodoItem from './TodoItem.vue'
 import ModalDialog from './ModalDialog.vue'
-import { Todo } from '../util/Todo'
-import { TaskState } from '../util/TaskState'
-
-/**
- * フィルターしたTodoを取得
- */
-function getFilterdTodos (array, state, isAllSelected) {
-  if (isAllSelected === false) {
-    return array.filter(el => {
-      return state.includes(el.state)
-    })
-  } else {
-    return array.concat()
-  }
-}
-
-function findbyId (array, id) {
-  let index = array.findIndex(v => v.id === id)
-  return array[index]
-}
+import { TaskState } from '@/util/TaskState'
+import { Type } from '@/store/mutation-types'
 
 export default {
   name: 'TodoList',
@@ -86,9 +67,6 @@ export default {
   },
   data () {
     return {
-      todos: [],
-      filteredTodos: [],
-      lastUid: 0,
       options: Object.values(TaskState),
       filterOption: [TaskState.Todo.value, TaskState.InProgress.value], //初期表示
       isAllSelected: false,
@@ -106,41 +84,28 @@ export default {
       let comment = this.$refs.comment
       if (!comment.value.length) return
 
-      let todo = new Todo(this.lastUid++, comment.value, TaskState.Todo.value)
-      this.todos.push(todo)
+      this.$store.dispatch(Type.ADD_TASK, comment.value)
+
       comment.value = ''
     },
     /**
      * ステータスを変更する
      */
     doChangeState: function (id) {
-      let item = findbyId(this.todos, id)
-      switch (item.state) {
-        case TaskState.Todo.value:
-          item.state = TaskState.InProgress.value
-          break
-        case TaskState.InProgress.value:
-          item.state = TaskState.Done.value
-          break
-        case TaskState.Done.value:
-          item.state = TaskState.Todo.value
-          break
-      }
+      this.$store.dispatch(Type.CHANGE_STATE, id)
     },
     /**
      * 削除
      */
     doRemove: function (id) {
-      let index = this.todos.findIndex(v => v.id === id)
-      this.todos.splice(index, 1)
+      this.$store.dispatch(Type.REMOVE_TASK, id)
     },
     /**
      * コメント編集
      */
     editComment: function (id) {
       this.isModal = true
-      let item = findbyId(this.todos, id)
-      this.editingItem = item
+      this.editingItem = this.$store.getters.getTodoById(id)
     },
     /**
      * モーダルを閉じる
@@ -153,9 +118,7 @@ export default {
      * 各ステータスのタスク数
      */
     todoCounts: function (state) {
-      return this.todos.filter(el => {
-        return state === -1 ? true : el.state === state
-      }).length
+      return this.$store.getters.getTaskCount(state)
     },
     /**
      * ステータスの色
@@ -168,20 +131,17 @@ export default {
      */
     onDragEnd: function (ev) {
       // filteredTodosはすでに並び替えられている
-      let offset = 0
-      if (ev.oldIndex < ev.newIndex) {
-        offset = -1 // top to bottom
-      } else if (ev.oldIndex > ev.newIndex) {
-        offset = 1 // bottom to top
-      } else {
+      if (ev.oldIndex == ev.newIndex) {
         return
       }
-      let origin = this.filteredTodos[ev.newIndex]
-      let originalIndex = this.todos.indexOf(origin)
-      let dest = this.filteredTodos[ev.newIndex + offset]
-      let destIndex = this.todos.indexOf(dest)
-      this.todos.splice(originalIndex, 1) // remove
-      this.todos.splice(destIndex, 0, origin) // insert
+
+      let params = {
+        oldIndex: ev.oldIndex,
+        newIndex: ev.newIndex,
+        option: this.filterOption,
+        isAllSelected: this.isAllSelected
+      }
+      this.$store.dispatch(Type.CHANGE_ORDER, params)
     },
     /**
      * すべて表示
@@ -202,33 +162,23 @@ export default {
      * 完了済みのタスクを削除
      */
     deleteDone: function() {
-      let options = [TaskState.Todo.value, TaskState.InProgress.value]
-      this.todos = getFilterdTodos(this.todos, options, false)
+      this.$store.dispatch(Type.DELETE_DONE)
     }
   },
   watch: {
-    todos: {
-      handler: function (todos) {
-        Storage.save(todos)
-        this.filteredTodos = getFilterdTodos(this.todos, this.filterOption, this.isAllSelected)
-      },
-      deep: true
-    },
     filterOption: function (newValue) {
       this.isAllSelected = newValue.length ===  this.options.length
-      this.filteredTodos = getFilterdTodos(this.todos, newValue, this.isAllSelected)
     }
   },
-  created () {
-    this.todos = Storage.fetch()
-    this.filteredTodos = this.todos.concat()
-    this.lastUid = this.todos.length
-  },
   computed: {
-    labels () {
-      return this.options.reduce(function (a, b) {
-        return Object.assign(a, { [b.value]: b.label })
-      }, {})
+    filteredTodos:{
+      get() {
+        return this.$store.getters.getFilteredTodos(this.filterOption, this.isAllSelected)
+      },
+      // eslint-disable-next-line
+      set(value) {
+        // vuedraggable用
+      }
     }
   }
 }
