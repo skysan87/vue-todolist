@@ -36,7 +36,8 @@
 </template>
 
 <script>
-import { TaskState } from '../util/TaskState'
+import { TaskState } from '@/util/TaskState'
+import { Type } from '@/store/mutation-types'
 
 export default {
   name: "modal-dialog",
@@ -56,6 +57,7 @@ export default {
       this.todo["comment"] = this.comment;
       this.todo["note"] = this.note;
       this.todo["state"] = this.state;
+      this.$store.dispatch(Type.UPDATE_TASK, this.todo)
       this.$emit("close");
     },
     cancel: function() {
