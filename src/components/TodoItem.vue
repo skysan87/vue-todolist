@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { getStateColor } from '../util/StateColor'
+import { getStateColor } from '@/util/StateColor'
 
 export default {
   name: 'todo-item',

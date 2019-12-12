@@ -3,8 +3,7 @@ const STORAGE_KEY = 'vue-todolist'
 export default class Storage {
   static fetch () {
     let todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
-    todos.forEach((todo, index) => {
-      todo.id = index
+    todos.forEach((todo) => {
       todo["note"] = todo.note || ""
     })
     return todos
