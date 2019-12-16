@@ -14,7 +14,7 @@
       <font-awesome-icon icon="edit" size="xs" class="pointer"/>
     </div>
     <transition name="slide-fade">
-      <div class="" @click="removeEventHandler" v-show="canRemove">
+      <div class="todo-x-pointer" @click="removeEventHandler" v-show="canRemove">
         <span class="pointer">×</span>
       </div>
     </transition>
