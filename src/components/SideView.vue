@@ -12,7 +12,7 @@
         <button class="btn-gray modal-default-button" @click="cancel">キャンセル</button>
         <label>
           <input type="checkbox" v-model="readonly" :disabled="!canEdit" />
-          <span>Readonly</span>
+          <span class="left-20">Readonly</span>
         </label>
       </div>
   </div>
@@ -81,7 +81,7 @@ export default {
 .sidenav {
   margin: 30px auto 0;
   padding: 20px 10px;
-  background-color: #fff;
+  background-color: #90CAF9;
 }
 
 .radio-label {
@@ -134,5 +134,9 @@ export default {
 .readonly {
   background-color: #5f5f5f3b;
   resize: none;
+}
+
+.left-20 {
+  padding-left: 5px;
 }
 </style>

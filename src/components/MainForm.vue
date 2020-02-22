@@ -60,7 +60,6 @@ export default {
   position: fixed;
   bottom: 0;
   right: 0;
-  background-color: #8f89e6;
   overflow-x: hidden;
 }
 
