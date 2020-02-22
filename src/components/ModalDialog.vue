@@ -40,7 +40,7 @@ import { TaskState } from '@/util/TaskState'
 import { Type } from '@/store/mutation-types'
 
 export default {
-  name: "modal-dialog",
+  name: "ModalDialog",
   props: {
     todo: Object
   },
