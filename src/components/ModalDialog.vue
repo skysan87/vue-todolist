@@ -19,7 +19,7 @@
             <input class="input-text" type="text" v-model="comment" ref="modalcomment" />
           </div>
           <div class="modal-body">
-            <textarea v-model="note" maxlength="1000" rows="3"/>
+            <textarea class="detail" v-model="note" maxlength="1000" rows="6"/>
           </div>
 
           <div class="modal-footer">
@@ -40,7 +40,7 @@ import { TaskState } from '@/util/TaskState'
 import { Type } from '@/store/mutation-types'
 
 export default {
-  name: "modal-dialog",
+  name: "ModalDialog",
   props: {
     todo: Object
   },
@@ -90,7 +90,7 @@ export default {
 
 .modal-mask {
   position: fixed;
-  z-index: 9998;
+  z-index: 10;
   top: 0;
   left: 0;
   width: 100%;
@@ -103,14 +103,14 @@ export default {
 
 .modal-wrapper {
   display: table-cell;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .modal-container {
-  width: 500px;
-  min-height: 150px;
-  margin: 30px auto 0;
-  padding: 20px 30px;
+  width: 80%;
+  min-height: 300px;
+  margin: 0 auto;
+  padding: 10px 10px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
@@ -130,14 +130,17 @@ export default {
 .input-text {
   width: 100%;
   line-height: 1.5;
+  border: 2px solid #0a0;
+  font-size: 14px;
 }
 
-textarea {
+.detail {
   width: 100%;
   resize: none;
-  padding: 5px 10px;
+  padding: 5px 5px;
   font-size: 14px;
   line-height: 1.5;
+  border: 2px solid #0a0;
 }
 
 .modal-default-button {

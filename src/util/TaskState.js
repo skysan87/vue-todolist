@@ -5,7 +5,7 @@ export const TaskState = {
   },
   InProgress: {
     value: 1,
-    label: 'In Progress'
+    label: 'Doing'
   },
   Done: {
     value: 2,
