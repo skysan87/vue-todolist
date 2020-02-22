@@ -26,10 +26,9 @@
 import { getStateColor } from '@/util/StateColor'
 
 export default {
-  name: 'todo-item',
+  name: 'TodoItem',
   props: {
-    todo: Object,
-    canRemove: Boolean
+    todo: Object
   },
   data () {
     return {
@@ -47,6 +46,11 @@ export default {
     },
     removeEventHandler: function () {
       this.$emit('remove', this.todo.id)
+    }
+  },
+  computed: {
+    canRemove () {
+      return this.$store.getters.getCanRemove
     }
   }
 }
