@@ -7,6 +7,9 @@ import store from './store'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faEllipsisV, faEdit } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import VueMobileDetection from 'vue-mobile-detection'
+
+Vue.use(VueMobileDetection)
 
 library.add(faEllipsisV, faEdit)
 
