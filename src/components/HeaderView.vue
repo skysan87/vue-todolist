@@ -22,8 +22,8 @@
             {{ todoCounts(viewOp.value) }}
           </span>
         </label>
-        <button class="btn-red" @click="deleteDone">Clear Done</button>
-        <button class="btn-switch-green" :class="{'switch-on': canRemove}" @click="switchRemoveButton">Edit</button>
+        <button class="modal-btn btn-red" @click="deleteDone">Clear Done</button>
+        <button class="modal-btn btn-switch-green" :class="{'switch-on': canRemove}" @click="switchRemoveButton">Edit</button>
       </div>
     </div>
 </template>
@@ -178,5 +178,11 @@ export default {
 .btn-red:hover {
   color: #fff;
   background-color: #dc3545;
+}
+
+@media screen and (max-width: 650px){
+  .modal-btn {
+    display: none;
+  }
 }
 </style>
