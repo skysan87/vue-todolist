@@ -34,7 +34,7 @@ export default {
       if (param === true && window.innerWidth < 650) {
         this.popup = true
       } else {
-        this.popup = param
+        this.popup = false
       }
     }
   }
@@ -72,8 +72,8 @@ export default {
 }
 
 .contents-box {
-  padding: 0px 10px;
   width: calc(100% - 280px);
+  padding: 0 20px;
 }
 
 @media screen and (max-width: 650px) {
@@ -82,6 +82,7 @@ export default {
   }
   .contents-box {
     width: 100%;
+    padding: 0;
   }
   .fix-top {
     width: 100%;

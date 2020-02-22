@@ -101,13 +101,14 @@ export default {
   width: 100%;
   line-height: 1.5;
   font-size: 14px;
+  padding: 2px 5px;
   resize: none;
 }
 
 .note {
   width: 100%;
   resize: vertical;
-  padding: 5px 0;
+  padding: 2px 5px;
   font-size: 14px;
   line-height: 1.5;
 }
