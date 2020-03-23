@@ -168,7 +168,7 @@ export default {
 }
 
 .readonly {
-  background-color: #5f5f5f3b;
+  background-color: #8a87871f;
   resize: none;
 }
 

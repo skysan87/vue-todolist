@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="flex-container">
+  <div :class="[{'flex-container__selected' : selected}, 'flex-container']">
     <div class="move-icon">
       <font-awesome-icon icon="ellipsis-v" size="xs"/>
     </div>
@@ -51,6 +51,12 @@ export default {
   computed: {
     canRemove () {
       return this.$store.getters.getCanRemove
+    },
+    selected () {
+      return (
+        this.$store.getters.getEditingValue !== null
+        && this.$store.getters.getEditingValue.id === this.todo.id
+      )
     }
   }
 }
@@ -62,6 +68,12 @@ export default {
 .flex-container {
   width: 100%;
   display: flex;
+  padding: 0.25rem 0.5rem;
+  background-color: #faf9f9;
+}
+
+.flex-container__selected {
+  background-color: rgb(187, 222, 250);
 }
 
 .flex-container div {
