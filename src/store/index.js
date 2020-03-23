@@ -76,6 +76,11 @@ export default new Vuex.Store({
       let index = state.todos.findIndex(v => v.id === payload.data)
       state.todos.splice(index, 1)
       Storage.save(state.todos)
+
+      // 編集中なら削除
+      if (state.editingTodo !== null && state.editingTodo.id === payload.data) {
+        state.editingTodo = null
+      }
     },
     [Type.CHANGE_STATE] (state, payload) {
       let index = state.todos.findIndex(v => v.id === payload.data)
@@ -93,6 +98,10 @@ export default new Vuex.Store({
           break
       }
       Storage.save(state.todos)
+
+      if (state.editingTodo !== null && state.editingTodo.id === payload.data) {
+        state.editingTodo.state = item.state
+      }
     },
     [Type.UPDATE_TASK] (state, payload) {
       let index = state.todos.findIndex(v => v.id === payload.data.id)
@@ -100,8 +109,6 @@ export default new Vuex.Store({
         Object.assign(state.todos[index], payload.data)
         Storage.save(state.todos)
       }
-      // 編集モード解除
-      state.editingTodo = null
     },
     [Type.CHANGE_ORDER] (state, payload) {
       let srcIndex = state.todos.findIndex(v => v.id === payload.src.id)
@@ -114,6 +121,14 @@ export default new Vuex.Store({
       let options = [TaskState.Todo.value, TaskState.InProgress.value]
       state.todos = getFilteredArray(state.todos, options, false)
       Storage.save(state.todos)
+
+      // 編集中なら削除
+      if (state.editingTodo !== null) {
+        let index = state.todos.findIndex(v => v.id === state.editingTodo.id)
+        if (index < 0) {
+          state.editingTodo = null
+        }
+      }
     },
     [Type.SWITCH_REMOVE_BTN] (state) {
       state.canRemove = !state.canRemove

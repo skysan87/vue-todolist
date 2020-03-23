@@ -24,7 +24,8 @@
 
           <div class="modal-footer">
             <button class="btn-regular modal-default-button" @click="update">OK</button>
-            <button class="btn-gray modal-default-button" @click="cancel">キャンセル</button>
+            <button class="btn-default modal-default-button" @click="cancel">Cancel</button>
+            <button class="btn-default modal-default-button" @click="deleteTodo">Delete</button>
           </div>
 
           <!-- フォーカスアウト防止 -->
@@ -67,6 +68,10 @@ export default {
       if (ev.target !== null && ev.target.className == 'dummy') {
         this.$refs.modalcomment.focus();
       }
+    },
+    deleteTodo: function() {
+      this.$store.dispatch(Type.REMOVE_TASK, this.todo.id)
+      this.$emit("close");
     }
   },
   created() {
