@@ -1,5 +1,15 @@
 <template>
   <div class="sidenav">
+
+      <div class="modal-body">
+        <div class="status-labels">
+          <label class="status-label" v-for="viewOp in options" v-bind:key="viewOp.value">
+            <input type="radio" v-model="todo.state" v-bind:value="viewOp.value" :disabled="readonly">
+            <span class="">{{ viewOp.label }}</span>
+          </label>
+        </div>
+      </div>
+
       <div class="modal-body">
         <textarea class="input-text" v-model="todo.comment" rows="3" :readonly="readonly" :class="{'readonly': readonly}" />
       </div>
@@ -8,12 +18,21 @@
       </div>
 
       <div class="modal-footer">
-        <button class="btn-regular modal-default-button" @click="update" :disabled="readonly">OK</button>
-        <button class="btn-gray modal-default-button" @click="cancel">キャンセル</button>
-        <label>
-          <input type="checkbox" v-model="readonly" :disabled="!canEdit" />
-          <span class="left-20">Readonly</span>
-        </label>
+        <div v-if="readonly">
+          <button class="btn-regular modal-default-button" @click="readonly = false" :disabled="!canEdit">
+            Edit
+          </button>
+          <button class="btn-default modal-default-button" @click="deleteTodo" :disabled="!canEdit">
+            Delete
+          </button>
+          <button class="btn-default modal-default-button" @click="clear">
+            Clear
+          </button>
+        </div>
+        <div v-if="!readonly">
+          <button class="btn-regular modal-default-button" @click="update">OK</button>
+          <button class="btn-default modal-default-button" @click="cancel">Cancel</button>
+        </div>
       </div>
   </div>
 </template>
@@ -30,24 +49,39 @@ export default {
       todo: Todo,
       options: Object.values(TaskState),
       readonly: true,
-      canEdit: false
+      canEdit: false,
+      lastTodo: Todo
     };
   },
   methods: {
     update: function() {
       if (this.readonly) return
-      this.canEdit = false
 
       if (this.todo !== null && this.todo.id !== null) {
         // commentの改行コードを削除
         this.todo.comment = this.todo.comment.replace(/\r?\n/g,'')
+        this.lastTodo = new Todo()
         this.$store.dispatch(Type.UPDATE_TASK, this.todo)
+        this.readonly = true
       }
     },
+    deleteTodo: function() {
+      if (this.todo !== null && this.todo.id !== null) {
+        this.$store.dispatch(Type.REMOVE_TASK, this.todo.id)
+      }
+    },
+    /**
+     * 編集モードを終了する
+     */
     cancel: function() {
-      this.canEdit = false
-
-      this.todo = new Todo()
+      this.todo = this.lastTodo
+      this.lastTodo = new Todo()
+      this.readonly = true
+    },
+    /**
+     * 表示内容をクリアする
+     */
+    clear: function() {
       this.$store.dispatch(Type.EDIT_MODE, {id: null, editing: false})
     }
   },
@@ -58,15 +92,17 @@ export default {
   },
   watch: {
     // eslint-disable-next-line
-    editingValue(newVal, oldVal) {
+    editingValue (newVal, oldVal) {
       if (newVal !== null) {
         console.log('start:' + newVal.id)
         this.todo = newVal
+        Object.assign(this.lastTodo, newVal)
         this.canEdit = true
         this.$emit('toggle', true)
       } else {
         console.log('end')
         this.todo = new Todo()
+        this.lastTodo = new Todo()
         this.canEdit = false
         this.readonly = true
         this.$emit('toggle', false)
