@@ -5,7 +5,7 @@
       <div class="list-group">
         <draggable v-model="filteredTodos" @end="onDragEnd"
                   handle=".move-icon">
-          <todo-item class="list-group-item list-style"
+          <todo-item class="list-group-item"
             v-for="item in filteredTodos"
             :key="item.id"
             :todo="item"
@@ -117,11 +117,6 @@ export default {
 
 .main-content {
   padding-top: 10px;
-}
-
-.list-style {
-  padding: 0.25rem 0.5rem;
-  background-color: #faf9f9;
 }
 
 .list-group {
