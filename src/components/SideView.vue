@@ -172,6 +172,11 @@ export default {
   resize: none;
 }
 
+.readonly::selection {
+  color: white;
+  background-color: blue;
+}
+
 .left-20 {
   padding-left: 5px;
 }
