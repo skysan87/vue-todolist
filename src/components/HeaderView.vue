@@ -71,7 +71,7 @@ export default {
      * すべて表示
      */
     selectAll: function () {
-      if (this.isAllSelected) {
+      if (!this.isAllSelected) {
         this.filterOption = []
         this.options.forEach((op) => this.filterOption.push(op.value))
       } else {
