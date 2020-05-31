@@ -94,13 +94,10 @@ export default {
     // eslint-disable-next-line
     editingValue (newVal, oldVal) {
       if (newVal !== null) {
-        console.log('start:' + newVal.id)
         this.todo = newVal
-        Object.assign(this.lastTodo, newVal)
         this.canEdit = true
         this.$emit('toggle', true)
       } else {
-        console.log('end')
         this.todo = new Todo()
         this.lastTodo = new Todo()
         this.canEdit = false
