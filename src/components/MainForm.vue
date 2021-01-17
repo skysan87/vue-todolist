@@ -19,6 +19,7 @@
 import HeaderView from './HeaderView.vue'
 import SideView from './SideView.vue'
 import TodoList from './TodoList.vue'
+import { Type } from '@/store/mutation-types'
 
 export default {
   name: 'MainForm',
@@ -37,6 +38,30 @@ export default {
       } else {
         this.popup = false
       }
+    },
+    onKeyDown(ev) {
+      if (ev.keyCode === 27 /* Escape */) {
+        this.cancelEditMode();
+      }
+    },
+    cancelEditMode() {
+      const target = document.activeElement;
+      switch (target.tagName) {
+        case 'INPUT': {
+          const attribute = target.getAttribute('type');
+          if (attribute !== 'text') {
+            this.$store.dispatch(Type.EDIT_MODE, {id: null, editing: false})
+          }
+          break;
+        }
+        case 'TEXTAREA': {
+          break;
+        }
+        default: {
+          this.$store.dispatch(Type.EDIT_MODE, {id: null, editing: false})
+          break;
+        }
+      }
     }
   },
   computed: {
@@ -46,6 +71,12 @@ export default {
     fixtopType: function() {
       return this.$isMobile() ? 'fix-top__mobile' : 'fix-top'
     }
+  },
+  created() {
+    document.addEventListener("keydown", this.onKeyDown);
+  },
+  beforeDestroy() {
+    document.removeEventListener("keydown", this.onKeyDown);
   }
 }
 </script>
