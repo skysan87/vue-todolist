@@ -38,6 +38,7 @@
 
 <script>
 import { TaskState } from '@/util/TaskState'
+import { Todo } from '@/util/Todo'
 import { Type } from '@/store/mutation-types'
 
 export default {
@@ -55,10 +56,12 @@ export default {
   },
   methods: {
     update: function() {
-      this.todo["comment"] = this.comment;
-      this.todo["note"] = this.note;
-      this.todo["state"] = this.state;
-      this.$store.dispatch(Type.UPDATE_TASK, this.todo)
+      const updatedTodo = new Todo();
+      updatedTodo.id = this.todo.id
+      updatedTodo.comment = this.comment;
+      updatedTodo.note = this.note;
+      updatedTodo.state = this.state;
+      this.$store.dispatch(Type.UPDATE_TASK, updatedTodo)
       this.$emit("close");
     },
     cancel: function() {
